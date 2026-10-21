@@ -32,7 +32,7 @@ class m261019_134410_create_escala_table extends Migration
             '{{%aeroporto}}', 'id', 'RESTRICT', 'CASCADE');
     }
 
-    
+
     public function safeDown()
     {
         $this->dropForeignKey('fk-escala-aeroporto_id', '{{%escala}}');

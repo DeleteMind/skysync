@@ -147,6 +147,14 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->getPrimaryKey();
     }
 
+
+    // estamos a dar a relação 1:1 na tabela
+    public function getPassageiro()
+    {
+        return $this->hasOne(Passageiro::class, ['user_id' => 'id']);
+    }
+
+
     /**
      * {@inheritdoc}
      */
