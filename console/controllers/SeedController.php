@@ -9,7 +9,7 @@ class SeedController extends Controller
 {
     public function actionVoos()
     {
-// Procurar pelo código IATA e pela matrícula, NUNCA pelo id
+        // Procurar pelo código IATA e pela matrícula, NUNCA pelo id
         $lis = Aeroporto::findOne(['codigo_iata' => 'LIS']);
         $opo = Aeroporto::findOne(['codigo_iata' => 'OPO']);
         $fnc = Aeroporto::findOne(['codigo_iata' => 'FNC']);
@@ -19,7 +19,7 @@ class SeedController extends Controller
             return 1;
         }
         $amanha = date('Y-m-d', strtotime('+1 day'));
-// Voo direto Lisboa -> Porto
+        // Voo direto Lisboa -> Porto
         $voo1 = new Voo([
             'numero' => 'TP1940',
             'aviao_id' => $aviao->id,
@@ -27,11 +27,13 @@ class SeedController extends Controller
             'aeroporto_destino_id' => $opo->id,
             'hora_partida' => "$amanha 08:00:00",
             'hora_chegada' => "$amanha 09:00:00",
+            'hora_partida_prevista' => "$amanha 08:00:00",
+            'hora_chegada_prevista' => "$amanha 09:00:00",
             'preco_base' => 49.99,
             'porta_embarque' => 'A12',
         ]);
         $voo1->save();
-// Voo Porto -> Madeira com escala em Lisboa
+        // Voo Porto -> Madeira com escala em Lisboa
         $voo2 = new Voo([
             'numero' => 'TP1700',
             'aviao_id' => $aviao->id,
@@ -39,6 +41,8 @@ class SeedController extends Controller
             'aeroporto_destino_id' => $fnc->id,
             'hora_partida' => "$amanha 10:00:00",
             'hora_chegada' => "$amanha 13:30:00",
+            'hora_partida_prevista' => "$amanha 10:00:00",
+            'hora_chegada_prevista' => "$amanha 13:30:00",
             'preco_base' => 89.99,
         ]);
         $voo2->save();
