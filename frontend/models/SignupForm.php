@@ -5,21 +5,33 @@ declare(strict_types=1);
 namespace frontend\models;
 
 use common\models\User;
+use common\models\Passageiro;
 use Yii;
 use yii\base\Model;
 use yii\mail\MailerInterface;
 
+
 /**
  * Signup form
  */
+
 class SignupForm extends Model
 {
     public string $username = '';
     public string $email = '';
     public string $password = '';
+
+    // passageiro
+    public $nome;
+    public $tipo_documento;
+    public $numero_documento;
+    public $nacionalidade;
+    public $contacto;
+
     /**
      * {@inheritdoc}
      */
+
     public function rules(): array
     {
         return [
@@ -36,6 +48,13 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
+
+            // passageiro
+            [['nome', 'tipo_documento', 'numero_documento', 'nacionalidade', 'contacto'], 'required'],
+            [['nome', 'contacto'], 'string', 'max' => 100],
+            ['nacionalidade', 'string', 'max' => 50],
+            ['numero_documento', 'string', 'max' => 20],
+            ['tipo_documento', 'in', 'range' => ['cc', 'passaporte', 'outro']],
         ];
     }
 
@@ -48,22 +67,55 @@ class SignupForm extends Model
      *
      * @return bool|null whether the creating new account was successful and email was sent.
      */
-    public function signup(MailerInterface $mailer, string $supportEmail, string $appName): bool|null
+
+
+    public function signup()
     {
         if (!$this->validate()) {
             return null;
         }
 
-        $user = new User();
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            //Criar o user
+            $user = new User();
+            $user->username = $this->username;
+            $user->email = $this->email;
+            $user->setPassword($this->password);
+            $user->generateAuthKey();
+            $user->generateEmailVerificationToken();
+            if (!$user->save()) {
+                throw new \Exception('Erro ao criar user');
+            }
 
-        $user->username = $this->username;
-        $user->email = $this->email;
+            //Criar o passageiro ligado ao user
+            $passageiro = new Passageiro();
+            $passageiro->user_id = $user->id;
+            $passageiro->nome = $this->nome;
+            $passageiro->tipo_documento = $this->tipo_documento;
+            $passageiro->numero_documento = $this->numero_documento;
+            $passageiro->nacionalidade = $this->nacionalidade;
+            $passageiro->contacto = $this->contacto;
+            if (!$passageiro->save()) {
+                throw new \Exception('Erro ao criar passageiro');
+            }
 
-        $user->setPassword($this->password);
-        $user->generateAuthKey();
-        $user->generateEmailVerificationToken();
+            //Atribuir a role passageiro
+            $auth = Yii::$app->authManager;
+            $auth->assign($auth->getRole('passageiro'), $user->id);
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            return null;
+        }
 
-        return $user->save() && $this->sendEmail($mailer, $user, $supportEmail, $appName);
+        $this->sendEmail(
+            Yii::$app->mailer,
+            $user,
+            Yii::$app->params['supportEmail'],
+            Yii::$app->name
+        );
+        return true;
     }
 
     /**

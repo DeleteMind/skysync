@@ -100,6 +100,40 @@ $labelOptions = ['class' => 'form-label fw-semibold small'];
                         ])->passwordInput()->label('Your Password', $labelOptions) ?>
                     </div>
 
+                    <div class="mb-3">
+                        <?= $form->field($model, 'nome', ['options' => ['class' => 'mb-0']])
+                                ->textInput(['placeholder' => 'Nome completo'])
+                                ->label('Nome', $labelOptions) ?>
+                    </div>
+
+                    <div class="mb-3">
+                        <?= $form->field($model, 'tipo_documento', ['options' => ['class' => 'mb-0']])
+                                ->dropDownList([
+                                        'cc' => 'Cartão de Cidadão',
+                                        'passaporte' => 'Passaporte',
+                                        'outro' => 'Outro',
+                                ], ['prompt' => 'Escolha...', 'class' => 'form-select'])
+                                ->label('Tipo de documento', $labelOptions) ?>
+                    </div>
+
+                    <div class="mb-3">
+                        <?= $form->field($model, 'numero_documento', ['options' => ['class' => 'mb-0']])
+                                ->textInput()
+                                ->label('Número do documento', $labelOptions) ?>
+                    </div>
+
+                    <div class="mb-3">
+                        <?= $form->field($model, 'nacionalidade', ['options' => ['class' => 'mb-0']])
+                                ->textInput(['placeholder' => 'Portuguesa'])
+                                ->label('Nacionalidade', $labelOptions) ?>
+                    </div>
+
+                    <div class="mb-4">
+                        <?= $form->field($model, 'contacto', ['options' => ['class' => 'mb-0']])
+                                ->textInput(['placeholder' => 'Telemóvel ou email'])
+                                ->label('Contacto', $labelOptions) ?>
+                    </div>
+
                     <div class="d-grid">
                         <?= Html::submitButton(
                             'Signup',
