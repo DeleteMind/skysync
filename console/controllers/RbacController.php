@@ -22,95 +22,91 @@ class RbacController extends Controller
         $auth = Yii::$app->authManager;
         $auth->removeAll(); // apaga tudo, incluindo as atribuições de roles aos utilizadores
 
-        // =========================================================
+
         // REGRA: só o dono do bilhete
-        // =========================================================
+
         $regraDono = new DonoBilheteRule();
         $auth->add($regraDono);
 
-        // =========================================================
-        // PERMISSÕES — PASSAGEIRO (Front-Office e App mobile)
-        // =========================================================
 
-        // RF-FO-10, RF-FO-11, RF-AM-03
+        // PERMISSÕES — PASSAGEIRO (Front-Office e App mobile)
+
         $editarDadosPessoais = $auth->createPermission('editarDadosPessoais');
         $editarDadosPessoais->description = 'Inserir e editar os seus dados pessoais';
         $auth->add($editarDadosPessoais);
 
-        // RF-FO-12 a RF-FO-16, RF-AM-07, RF-AM-08
+
         $comprarBilhete = $auth->createPermission('comprarBilhete');
         $comprarBilhete->description = 'Comprar e pagar bilhetes para si e para acompanhantes';
         $auth->add($comprarBilhete);
 
-        // RF-FO-18, RF-AM-10
+
         $verBilhetesProprios = $auth->createPermission('verBilhetesProprios');
         $verBilhetesProprios->description = 'Consultar os seus bilhetes e o histórico de viagens';
         $auth->add($verBilhetesProprios);
 
-        // RF-FO-17, RF-FO-25, RF-AM-12 (só os seus bilhetes)
+
         $exportarBilheteProprio = $auth->createPermission('exportarBilheteProprio');
         $exportarBilheteProprio->description = 'Exportar o bilhete e os dados de check-in (QR)';
         $exportarBilheteProprio->ruleName = $regraDono->name;
         $auth->add($exportarBilheteProprio);
 
-        // RF-FO-20 a RF-FO-22, RF-AM-09 (só os seus bilhetes)
+
         $gerirBagagemPropria = $auth->createPermission('gerirBagagemPropria');
         $gerirBagagemPropria->description = 'Adicionar, editar e retirar bagagem dos seus bilhetes';
         $gerirBagagemPropria->ruleName = $regraDono->name;
         $auth->add($gerirBagagemPropria);
 
-        // RF-FO-24, RF-AM-11 (só os seus bilhetes)
-        // O check-in SEM conta (RF-FO-23) não usa RBAC: valida nº do bilhete + nº do documento.
+
+        // O check-in SEM conta não usa RBAC: valida nº do bilhete + nº do documento.
         $fazerCheckInProprio = $auth->createPermission('fazerCheckInProprio');
         $fazerCheckInProprio->description = 'Fazer check-in com sessão iniciada';
         $fazerCheckInProprio->ruleName = $regraDono->name;
         $auth->add($fazerCheckInProprio);
 
-        // =========================================================
-        // PERMISSÕES — GESTOR OPERACIONAL (Back-Office)
-        // =========================================================
 
-        // RF-BO-01
+        // PERMISSÕES — GESTOR OPERACIONAL (Back-Office)
+
         $acederBackend = $auth->createPermission('acederBackend');
         $acederBackend->description = 'Autenticar-se no back-office';
         $auth->add($acederBackend);
 
-        // RF-BO-14 a RF-BO-16
+
         $gerirAeroportos = $auth->createPermission('gerirAeroportos');
         $gerirAeroportos->description = 'Importar (API externa), editar e eliminar aeroportos';
         $auth->add($gerirAeroportos);
 
-        // RF-BO-17 a RF-BO-20
+
         $gerirAvioes = $auth->createPermission('gerirAvioes');
         $gerirAvioes->description = 'Registar, editar, eliminar e alterar o estado de aviões';
         $auth->add($gerirAvioes);
 
-        // RF-BO-21 a RF-BO-24, RF-BO-28 a RF-BO-30
+
         $gerirVoos = $auth->createPermission('gerirVoos');
         $gerirVoos->description = 'Registar, editar, eliminar e listar voos; estado, horas reais e porta de embarque';
         $auth->add($gerirVoos);
 
-        // RF-BO-25 a RF-BO-27
+
         $gerirEscalas = $auth->createPermission('gerirEscalas');
         $gerirEscalas->description = 'Adicionar, editar e remover escalas de um voo';
         $auth->add($gerirEscalas);
 
-        // RF-BO-31, RF-BO-33
+
         $verBilhetesVoo = $auth->createPermission('verBilhetesVoo');
         $verBilhetesVoo->description = 'Consultar bilhetes vendidos e passageiros com check-in de um voo';
         $auth->add($verBilhetesVoo);
 
-        // RF-BO-32 (qualquer bilhete)
+
         $cancelarBilhete = $auth->createPermission('cancelarBilhete');
         $cancelarBilhete->description = 'Cancelar qualquer bilhete';
         $auth->add($cancelarBilhete);
 
-        // RF-BO-34
+
         $verEstatisticas = $auth->createPermission('verEstatisticas');
         $verEstatisticas->description = 'Ver o painel de estatísticas';
         $auth->add($verEstatisticas);
 
-        // RF-FO-19, RF-AM-14 (passageiro, só os seus bilhetes).
+
         // É "filha" de cancelarBilhete: quem pode cancelar qualquer um também pode cancelar o seu.
         $cancelarBilheteProprio = $auth->createPermission('cancelarBilheteProprio');
         $cancelarBilheteProprio->description = 'Cancelar um bilhete seu de um voo que ainda não partiu';
@@ -118,38 +114,31 @@ class RbacController extends Controller
         $auth->add($cancelarBilheteProprio);
         $auth->addChild($cancelarBilheteProprio, $cancelarBilhete);
 
-        // =========================================================
-        // PERMISSÕES — ADMINISTRADOR (Back-Office)
-        // =========================================================
 
-        // RF-BO-02 a RF-BO-05
+        // PERMISSÕES — ADMINISTRADOR (Back-Office)
+
         $gerirUtilizadores = $auth->createPermission('gerirUtilizadores');
         $gerirUtilizadores->description = 'Criar, listar, editar e eliminar contas de utilizadores';
         $auth->add($gerirUtilizadores);
 
-        // RF-BO-06
         $atribuirPerfis = $auth->createPermission('atribuirPerfis');
         $atribuirPerfis->description = 'Atribuir e alterar o perfil de um utilizador';
         $auth->add($atribuirPerfis);
 
-        // RF-BO-07
         $monitorizarSistema = $auth->createPermission('monitorizarSistema');
         $monitorizarSistema->description = 'Monitorizar a disponibilidade da API e o estado da base de dados';
         $auth->add($monitorizarSistema);
 
-        // RF-BO-08 a RF-BO-10
         $gerirCompanhias = $auth->createPermission('gerirCompanhias');
         $gerirCompanhias->description = 'Registar, editar e eliminar companhias aéreas';
         $auth->add($gerirCompanhias);
 
-        // RF-BO-11 a RF-BO-13
         $gerirTiposBagagem = $auth->createPermission('gerirTiposBagagem');
         $gerirTiposBagagem->description = 'Registar, editar e eliminar tipos de bagagem';
         $auth->add($gerirTiposBagagem);
 
-        // =========================================================
+
         // ROLES
-        // =========================================================
 
         // Passageiro (Front-Office + App mobile)
         $passageiro = $auth->createRole('passageiro');
