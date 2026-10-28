@@ -72,6 +72,11 @@ class RbacController extends Controller
         $auth->add($acederBackend);
 
 
+        $gerirBagagem = $auth->createPermission('gerirBagagem');
+        $gerirBagagem->description = 'Gerir bagagem';
+        $auth->add($gerirBagagem);
+
+
         $gerirAeroportos = $auth->createPermission('gerirAeroportos');
         $gerirAeroportos->description = 'Importar (API externa), editar e eliminar aeroportos';
         $auth->add($gerirAeroportos);
@@ -164,6 +169,7 @@ class RbacController extends Controller
         $auth->addChild($gestor, $verBilhetesVoo);
         $auth->addChild($gestor, $cancelarBilhete);
         $auth->addChild($gestor, $verEstatisticas);
+        $auth->addChild($gestor, $gerirBagagem);
 
         // Administrador (Back-Office): tudo o que o gestor faz + as suas permissões
         $admin = $auth->createRole('admin');

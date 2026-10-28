@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 /** @var yii\web\View $this */
 
+use common\models\Aviao;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 use yii\helpers\Html;
+
+$user = Yii::$app->user;
 
 $items = [
     [
@@ -18,6 +21,51 @@ $items = [
         'url' => ['/site/login'],
         'visible' => Yii::$app->user->isGuest,
     ],
+
+    // operacoes gestor/admin
+    [
+        'label' => 'Aviões',
+        'url' => ['/aviao/index'],
+        'visible' => $user->can('gerirAvioes'),
+    ],
+    [
+        'label' => 'Bilhetes',
+        'url' => ['/bilhete/index'],
+        'visible' => $user->can('verBilhetesVoo'),
+    ],
+    [
+        'label' => 'Voos',
+        'url' => ['/voo/index'],
+        'visible' => $user->can('gerirVoos'),
+    ],
+    [
+        'label' => 'Escalas',
+        'url' => ['/escala/index'],
+        'visible' => $user->can('gerirEscalas'),
+    ],
+    [
+        'label' => 'Aeroportos',
+        'url' => ['/aeroporto/index'],
+        'visible' => $user->can('gerirAeroportos'),
+    ],
+    [
+        'label' => 'Bagagem',
+        'url' => ['/bagagem/index'],
+        'visible' => $user->can('gerirBagagem'),
+    ],
+
+    // operacoes admin
+    [
+        'label' => 'Companhia Aerea',
+        'url' => ['/companhia-aerea/index'],
+        'visible' => $user->can('gerirCompanhias'),
+    ],
+    [
+        'label' => 'Tipo Bagagem',
+        'url' => ['/tipo-bagagem/index'],
+        'visible' => $user->can('gerirTiposBagagem'),
+    ],
+
     [
         'label' => 'Logout (' . Html::encode(Yii::$app->user->identity?->username) . ')',
         'url' => ['/site/logout'],
