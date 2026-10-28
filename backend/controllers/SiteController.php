@@ -83,6 +83,11 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            if (!Yii::$app->user->can('acederBackend')) {
+                Yii::$app->user->logout();
+                Yii::$app->session->setFlash('error', 'Não tem acesso ao backend.');
+                return $this->refresh();
+            }
             return $this->goBack();
         }
 
