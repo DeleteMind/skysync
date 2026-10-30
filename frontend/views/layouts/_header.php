@@ -46,9 +46,9 @@ $items = [
 <header id="header">
     <?php NavBar::begin(
         [
-            'brandLabel' => Yii::$app->name,
-            'brandUrl' => Yii::$app->homeUrl,
-            'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
+            'brandLabel' => Yii::$app->name, // usar o logo do nosso projeto no brandLabel
+            'brandUrl' => Yii::$app->homeUrl, // para onde quero ir quando coloco no logo
+            'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top'] // o que vem no nosso template
         ],
     ) ?>
     <?= Nav::widget(
