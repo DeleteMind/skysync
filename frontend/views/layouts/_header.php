@@ -16,7 +16,7 @@ $items = [
                 'label' => 'Voos',
                 'url' => ['/voo/index'],
         ],
-
+/*
         [
                 'label' => 'Partidas & Chegadas',
                 'url' => [''],
@@ -25,7 +25,7 @@ $items = [
                 'label' => 'Check-In',
                 'url' => [''],
         ],
-
+*/
         [
                 'label' => 'Os meus bilhetes',
                 'url' => ['/bilhete/index'],
