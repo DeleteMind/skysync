@@ -113,22 +113,18 @@ class RbacController extends Controller
         // CRUD - Bagagem
         $verBagagem = $auth->createPermission('verBagagem');
         $verBagagem ->description = 'Adicionar bagagem dos seus bilhetes';
-        $verBagagem ->ruleName = $regraDono->name;
         $auth->add($verBagagem );
 
         $adicionarBagagem= $auth->createPermission('adicionarBagagem');
         $adicionarBagagem->description = 'Adicionar bagagem dos seus bilhetes';
-        $adicionarBagagem->ruleName = $regraDono->name;
         $auth->add($adicionarBagagem);
 
         $editarBagagem = $auth->createPermission('editarBagagem');
         $editarBagagem->description = 'Editar bagagem dos seus bilhetes';
-        $editarBagagem->ruleName = $regraDono->name;
         $auth->add($editarBagagem);
 
         $apagarBagagem = $auth->createPermission('apagarBagagem');
         $apagarBagagem->description = 'Apagar bagagem dos seus bilhetes';
-        $apagarBagagem->ruleName = $regraDono->name;
         $auth->add($apagarBagagem);
 
 
@@ -289,7 +285,7 @@ class RbacController extends Controller
 
 
         // CRUD - Tipos de Bagagem
-        $adicionarTiposBagagem = $auth->createPermission('gerirTiposBagagem');
+        $adicionarTiposBagagem = $auth->createPermission('adicionarTiposBagagem');
         $adicionarTiposBagagem->description = 'Adicionar tipo de bagagem';
         $auth->add($adicionarTiposBagagem);
 
@@ -297,7 +293,7 @@ class RbacController extends Controller
         $verTiposBagagem->description = 'Ver tipo de bagagem';
         $auth->add($verTiposBagagem);
 
-        $editarTiposBagagem = $auth->createPermission('editariposBagagem');
+        $editarTiposBagagem = $auth->createPermission('editarTiposBagagem');
         $editarTiposBagagem->description = 'Editar tipo de bagagem';
         $auth->add($editarTiposBagagem);
 
