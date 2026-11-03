@@ -83,6 +83,7 @@ class SignupForm extends Model
             $user->email = $this->email;
             $user->setPassword($this->password);
             $user->generateAuthKey();
+            $user->status = User::STATUS_ACTIVE; // para o utilizador ficar com o status ativo 10
             $user->generateEmailVerificationToken();
             if (!$user->save()) {
                 throw new \Exception('Erro ao criar user');
