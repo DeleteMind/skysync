@@ -31,9 +31,9 @@ class RbacController extends Controller
 
 
 
-        // PERMISSÕES — PASSAGEIRO (Front-Office e App mobile)
-        // CRUD dados pessoais
+        // PERMISSÕES — PASSAGEIRO (Front-Office e App mobile) //
 
+        // CRUD dados pessoais
         $inserirDadosPassageiro = $auth->createPermission('verDadosPassageiro');
         $inserirDadosPassageiro->description = 'Inserir os dados pessoais';
         $auth->add($inserirDadosPassageiro);
@@ -51,26 +51,25 @@ class RbacController extends Controller
         $auth->add($apagarDadosPassageiro);
 
 
-
         // Bilhete
         $comprarBilhete = $auth->createPermission('comprarBilhete');
         $comprarBilhete->description = 'Comprar e pagar bilhetes para si e para acompanhantes';
         $auth->add($comprarBilhete);
 
-        $apagarBilhete = $auth->createPermission('apagarBilhete');
-        $apagarBilhete->description = 'Apagar bilhetes para si e para acompanhantes';
-        $auth->add($apagarBilhete);
+        $apagarBilheteProprio = $auth->createPermission('apagarBilheteProprio');
+        $apagarBilheteProprio->description = 'Apagar bilhetes para si e para acompanhantes';
+        $apagarBilheteProprio->ruleName = $regraDono->name;
+        $auth->add($apagarBilheteProprio);
 
-        $verBilhetesProprio = $auth->createPermission('verBilhetesProprio');
-        $verBilhetesProprio->description = 'Consultar os seus bilhetes e o histórico de viagens';
-        $verBilhetesProprio->ruleName = $regraDono->name;
-        $auth->add($verBilhetesProprio);
+        $verBilheteProprio = $auth->createPermission('verBilhetesProprio');
+        $verBilheteProprio->description = 'Consultar os seus bilhetes e o histórico de viagens';
+        $verBilheteProprio->ruleName = $regraDono->name;
+        $auth->add($verBilheteProprio);
 
         $exportarBilheteProprio = $auth->createPermission('exportarBilheteProprio');
         $exportarBilheteProprio->description = 'Exportar o bilhete';
         $exportarBilheteProprio->ruleName = $regraDono->name;
         $auth->add($exportarBilheteProprio);
-
 
 
         // CRUD gerir Bagagem Própria
@@ -95,7 +94,6 @@ class RbacController extends Controller
         $auth->add($apagarBagagemPropria);
 
 
-
         // O check-in SEM conta não usa RBAC: valida nº do bilhete + nº do documento.
         $fazerCheckInProprio = $auth->createPermission('fazerCheckInProprio');
         $fazerCheckInProprio->description = 'Fazer check-in com sessão iniciada';
@@ -104,11 +102,13 @@ class RbacController extends Controller
 
 
 
-        // PERMISSÕES — GESTOR OPERACIONAL (Back-Office)
+
+        // PERMISSÕES — GESTOR OPERACIONAL (Back-Office) //
+
+
         $acederBackend = $auth->createPermission('acederBackend');
         $acederBackend->description = 'Autenticar-se no back-office';
         $auth->add($acederBackend);
-
 
 
         // CRUD - Bagagem
@@ -131,7 +131,6 @@ class RbacController extends Controller
         $apagarBagagem->description = 'Apagar bagagem dos seus bilhetes';
         $apagarBagagem->ruleName = $regraDono->name;
         $auth->add($apagarBagagem);
-
 
 
         // CRUD - AEROPORTOS
@@ -199,13 +198,13 @@ class RbacController extends Controller
 
 
         // CRUD - BILHETES
-        $verBilhetesVoo = $auth->createPermission('verBilhetesVoo');
-        $verBilhetesVoo->description = 'Consultar bilhetes vendidos e passageiros com check-in de um voo';
-        $auth->add($verBilhetesVoo);
+        $verBilhetes = $auth->createPermission('verBilhetes');
+        $verBilhetes->description = 'Ver bilhetes vendidos e passageiros com check-in de um voo';
+        $auth->add($verBilhetes);
 
-        $apagarBilhete = $auth->createPermission('apagarBilhete');
-        $apagarBilhete->description = 'Apagar qualquer bilhete';
-        $auth->add($apagarBilhete);
+        $apagarBilhetes = $auth->createPermission('apagarBilhete');
+        $apagarBilhetes->description = 'Apagar qualquer bilhete';
+        $auth->add($apagarBilhetes);
 
 
 
@@ -221,7 +220,7 @@ class RbacController extends Controller
         $apagarBilheteProprio->description = 'Apagar um bilhete proprio de um voo que ainda não partiu';
         $apagarBilheteProprio->ruleName = $regraDono->name;
         $auth->add($apagarBilheteProprio);  //  aqui guarda na BD
-        $auth->addChild($apagarBilheteProprio, $apagarBilhete);
+        $auth->addChild($apagarBilheteProprio, $apagarBilhetes);
 
 
 
@@ -311,6 +310,7 @@ class RbacController extends Controller
 
         // ROLES
         // Passageiro (Front-Office + App mobile)
+
         $passageiro = $auth->createRole('passageiro');
         $passageiro->description = 'Passageiro';
         $auth->add($passageiro);
@@ -319,35 +319,66 @@ class RbacController extends Controller
         $auth->addChild($passageiro, $editarDadosPassageiro);
         $auth->addChild($passageiro, $apagarDadosPassageiro);
         $auth->addChild($passageiro, $comprarBilhete);
-        $auth->addChild($passageiro, $verBilhetesProprios);
+        $auth->addChild($passageiro, $apagarBilheteProprio);
+        $auth->addChild($passageiro, $verBilheteProprio);
         $auth->addChild($passageiro, $exportarBilheteProprio);
-        $auth->addChild($passageiro, $gerirBagagemPropria);
+        $auth->addChild($passageiro, $verBagagemPropria);
+        $auth->addChild($passageiro, $adicionarBagagemPropria);
+        $auth->addChild($passageiro, $editarBagagemPropria);
+        $auth->addChild($passageiro, $apagarBagagemPropria);
         $auth->addChild($passageiro, $fazerCheckInProprio);
-        $auth->addChild($passageiro, $cancelarBilheteProprio);
+
 
         // Gestor Operacional (Back-Office)
+
         $gestor = $auth->createRole('gestor');
         $gestor->description = 'Gestor Operacional';
         $auth->add($gestor);
         $auth->addChild($gestor, $acederBackend);
-        $auth->addChild($gestor, $gerirAeroportos);
-        $auth->addChild($gestor, $gerirAvioes);
-        $auth->addChild($gestor, $gerirVoos);
-        $auth->addChild($gestor, $gerirEscalas);
-        $auth->addChild($gestor, $verBilhetesVoo);
-        $auth->addChild($gestor, $cancelarBilhete);
+        $auth->addChild($gestor, $verBagagem);
+        $auth->addChild($gestor, $adicionarBagagem);
+        $auth->addChild($gestor, $editarBagagem);
+        $auth->addChild($gestor, $apagarBagagem);
+        $auth->addChild($gestor, $verAeroportos);
+        $auth->addChild($gestor, $verAvioes);
+        $auth->addChild($gestor, $adicionarAvioes);
+        $auth->addChild($gestor, $editarAvioes);
+        $auth->addChild($gestor, $apagarAvioes);
+        $auth->addChild($gestor, $adicionarVoos);
+        $auth->addChild($gestor, $verVoos);
+        $auth->addChild($gestor, $editarVoos);
+        $auth->addChild($gestor, $apagarVoos);
+        $auth->addChild($gestor, $adicionarEscalas);
+        $auth->addChild($gestor, $verEscalas);
+        $auth->addChild($gestor, $editarEscalas);
+        $auth->addChild($gestor, $apagarEscalas);
+        $auth->addChild($gestor, $verBilhetes);
+        $auth->addChild($gestor, $apagarBilhetes);
         $auth->addChild($gestor, $verEstatisticas);
-        $auth->addChild($gestor, $gerirBagagem);
+
+
 
         // Administrador (Back-Office): tudo o que o gestor faz + as suas permissões
         $admin = $auth->createRole('admin');
         $admin->description = 'Administrador de sistema';
         $auth->add($admin);
-        $auth->addChild($admin, $gerirUtilizadores);
-        $auth->addChild($admin, $atribuirPerfis);
-        $auth->addChild($admin, $monitorizarSistema);
-        $auth->addChild($admin, $gerirCompanhias);
-        $auth->addChild($admin, $gerirTiposBagagem);
+        $auth->addChild($admin, $adicionarUtilizadores);
+        $auth->addChild($admin, $verUtilizadores);
+        $auth->addChild($admin, $editarUtilizadores);
+        $auth->addChild($admin, $apagarUtilizadores);
+        $auth->addChild($admin, $adicionarPerfis);
+        $auth->addChild($admin, $verPerfis);
+        $auth->addChild($admin, $editarPerfis);
+        $auth->addChild($admin, $apagarPerfis);
+        $auth->addChild($admin, $adicionarCompanhias);
+        $auth->addChild($admin, $verCompanhias);
+        $auth->addChild($admin, $apagarCompanhias);
+        $auth->addChild($admin, $editarCompanhias);
+        $auth->addChild($admin, $adicionarTiposBagagem);
+        $auth->addChild($admin, $verTiposBagagem);
+        $auth->addChild($admin, $editarTiposBagagem);
+        $auth->addChild($admin, $apagarTiposBagagem);
+
         $auth->addChild($admin, $gestor); // herda todas as permissões do gestor
 
         echo "RBAC do SkySync criado: 3 roles, 20 permissões, 1 regra.\n";
