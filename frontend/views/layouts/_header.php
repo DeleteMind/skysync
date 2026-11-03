@@ -18,6 +18,15 @@ $items = [
         ],
 
         [
+                'label' => 'Partidas & Chegadas',
+                'url' => [''],
+        ],
+        [
+                'label' => 'Check-In',
+                'url' => [''],
+        ],
+
+        [
                 'label' => 'Os meus bilhetes',
                 'url' => ['/bilhete/index'],
                 'visible' => !$user->isGuest,
