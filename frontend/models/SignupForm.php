@@ -104,8 +104,10 @@ class SignupForm extends Model
             $auth = Yii::$app->authManager;
             $auth->assign($auth->getRole('passageiro'), $user->id);
             $transaction->commit();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $transaction->rollBack();
+            Yii::error('Erro no registo: ' . $e->getMessage(), __METHOD__);
+            $this->addError('username', 'Não foi possível criar a conta: ' . $e->getMessage());
             return null;
         }
 

@@ -54,11 +54,13 @@ class RbacController extends Controller
         $comprarBilhete = $auth->createPermission('comprarBilhete');
         $comprarBilhete->description = 'Comprar e pagar bilhetes para si e para acompanhantes';
         $auth->add($comprarBilhete);
-
+        
+        /*
         $apagarBilheteProprio = $auth->createPermission('apagarBilheteProprio');
         $apagarBilheteProprio->description = 'Apagar bilhetes para si e para acompanhantes';
         $apagarBilheteProprio->ruleName = $regraDono->name;
         $auth->add($apagarBilheteProprio);
+        */
 
         $verBilheteProprio = $auth->createPermission('verBilhetesProprio');
         $verBilheteProprio->description = 'Consultar os seus bilhetes e o histórico de viagens';
