@@ -16,16 +16,16 @@ $items = [
                 'label' => 'Voos',
                 'url' => ['/voo/index'],
         ],
-/*
+
         [
                 'label' => 'Partidas & Chegadas',
-                'url' => [''],
+                'url' => ['/partidas/index'],
         ],
         [
                 'label' => 'Check-In',
-                'url' => [''],
+                'url' => ['checkin/index'],
         ],
-*/
+
         [
                 'label' => 'Os meus bilhetes',
                 'url' => ['/bilhete/index'],
