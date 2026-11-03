@@ -23,22 +23,46 @@ class RbacController extends Controller
         $auth->removeAll(); // apaga tudo, incluindo as atribuições de roles aos utilizadores
 
 
+
         // REGRA: só o dono do bilhete
 
         $regraDono = new DonoBilheteRule();
         $auth->add($regraDono);
 
 
+
         // PERMISSÕES — PASSAGEIRO (Front-Office e App mobile)
 
-        $editarDadosPessoais = $auth->createPermission('editarDadosPessoais');
-        $editarDadosPessoais->description = 'Inserir e editar os seus dados pessoais';
-        $auth->add($editarDadosPessoais);
+        // Dados pessoais
+
+        $inserirDadosPassageiro = $auth->createPermission('VerDadosPassageiro');
+        $inserirDadosPassageiro->description = 'Inserir os dados pessoais';
+        $auth->add($inserirDadosPassageiro);
+
+        $inserirDadosPassageiro = $auth->createPermission('InserirDadosPassageiro');
+        $inserirDadosPassageiro->description = 'Inserir os dados pessoais';
+        $auth->add($inserirDadosPassageiro);
+
+        $editarDadosPassageiro = $auth->createPermission('editarDadosPassageiro');
+        $editarDadosPassageiro->description = 'Editar os dados pessoais';
+        $auth->add($editarDadosPassageiro);
 
 
+        $apagarDadosPassageiro = $auth->createPermission('apagarDadosPassageiro');
+        $apagarDadosPassageiro->description = 'Apagar os dados pessoais';
+        $auth->add($apagarDadosPassageiro);
+
+
+
+
+        // Bilhete
         $comprarBilhete = $auth->createPermission('comprarBilhete');
         $comprarBilhete->description = 'Comprar e pagar bilhetes para si e para acompanhantes';
         $auth->add($comprarBilhete);
+
+        $apagarBilhete = $auth->createPermission('apagarBilhete');
+        $apagarBilhete->description = 'Apagar bilhetes para si e para acompanhantes';
+        $auth->add($apagarBilhete);
 
 
         $verBilhetesProprios = $auth->createPermission('verBilhetesProprios');
@@ -47,15 +71,33 @@ class RbacController extends Controller
 
 
         $exportarBilheteProprio = $auth->createPermission('exportarBilheteProprio');
-        $exportarBilheteProprio->description = 'Exportar o bilhete e os dados de check-in (QR)';
+        $exportarBilheteProprio->description = 'Exportar o bilhete';
         $exportarBilheteProprio->ruleName = $regraDono->name;
         $auth->add($exportarBilheteProprio);
 
 
-        $gerirBagagemPropria = $auth->createPermission('gerirBagagemPropria');
-        $gerirBagagemPropria->description = 'Adicionar, editar e retirar bagagem dos seus bilhetes';
-        $gerirBagagemPropria->ruleName = $regraDono->name;
-        $auth->add($gerirBagagemPropria);
+        // CRUD gerir Bagagem Própria
+
+        $verBagagemPropria = $auth->createPermission('verBagagemPropria');
+        $verBagagemPropria->description = 'Adicionar bagagem dos seus bilhetes';
+        $verBagagemPropria->ruleName = $regraDono->name;
+        $auth->add($verBagagemPropria);
+
+
+        $adicionarBagagemPropria = $auth->createPermission('adicionarBagagemPropria');
+        $adicionarBagagemPropria->description = 'Adicionar bagagem dos seus bilhetes';
+        $adicionarBagagemPropria->ruleName = $regraDono->name;
+        $auth->add($adicionarBagagemPropria);
+
+        $editarBagagemPropria = $auth->createPermission('editarBagagemPropria');
+        $editarBagagemPropria->description = 'Editar bagagem dos seus bilhetes';
+        $editarBagagemPropria->ruleName = $regraDono->name;
+        $auth->add($editarBagagemPropria);
+
+        $apagarBagagemPropria = $auth->createPermission('apagarBagagemPropria');
+        $apagarBagagemPropria->description = 'Apagar bagagem dos seus bilhetes';
+        $apagarBagagemPropria->ruleName = $regraDono->name;
+        $auth->add($apagarBagagemPropria);
 
 
         // O check-in SEM conta não usa RBAC: valida nº do bilhete + nº do documento.
@@ -65,38 +107,84 @@ class RbacController extends Controller
         $auth->add($fazerCheckInProprio);
 
 
+
         // PERMISSÕES — GESTOR OPERACIONAL (Back-Office)
 
         $acederBackend = $auth->createPermission('acederBackend');
         $acederBackend->description = 'Autenticar-se no back-office';
         $auth->add($acederBackend);
 
+        // CRUD - Bagagem
+        $verBagagem = $auth->createPermission('verBagagem');
+        $verBagagem ->description = 'Adicionar bagagem dos seus bilhetes';
+        $verBagagem ->ruleName = $regraDono->name;
+        $auth->add($verBagagem );
 
-        $gerirBagagem = $auth->createPermission('gerirBagagem');
-        $gerirBagagem->description = 'Gerir bagagem';
-        $auth->add($gerirBagagem);
+        $adicionarBagagem= $auth->createPermission('adicionarBagagem');
+        $adicionarBagagem->description = 'Adicionar bagagem dos seus bilhetes';
+        $adicionarBagagem->ruleName = $regraDono->name;
+        $auth->add($adicionarBagagem);
+
+        $editarBagagem = $auth->createPermission('editarBagagem');
+        $editarBagagem->description = 'Editar bagagem dos seus bilhetes';
+        $editarBagagem->ruleName = $regraDono->name;
+        $auth->add($editarBagagem);
+
+        $apagarBagagem = $auth->createPermission('apagarBagagem');
+        $apagarBagagem->description = 'Apagar bagagem dos seus bilhetes';
+        $apagarBagagem->ruleName = $regraDono->name;
+        $auth->add($apagarBagagem);
+
+        // CRUD - AEROPORTOS
+
+        $verAeroportos = $auth->createPermission('verAeroportos');
+        $verAeroportos->description = 'Ver aeroportos gerados pela API externa';
+        $auth->add($verAeroportos);
+
+        // CRUD - AVIÕES
+
+        $verAvioes = $auth->createPermission('verAvioes');
+        $verAvioes->description = 'Ver o estado de aviões';
+        $auth->add($verAvioes);
+
+        $adicionarAvioes = $auth->createPermission('adicionarAvioes');
+        $adicionarAvioes->description = 'Adicionar o estado de aviões';
+        $auth->add($adicionarAvioes);
+
+        $editarAvioes = $auth->createPermission('editarAvioes');
+        $editarAvioes->description = 'Editar estado de aviões';
+        $auth->add($editarAvioes);
+
+        $apagarAvioes = $auth->createPermission('apagarAvioes');
+        $apagarAvioes->description = 'Eliminar o estado de aviões';
+        $auth->add($apagarAvioes);
 
 
-        $gerirAeroportos = $auth->createPermission('gerirAeroportos');
-        $gerirAeroportos->description = 'Importar (API externa), editar e eliminar aeroportos';
-        $auth->add($gerirAeroportos);
+        // CRUD - VOOS
+
+        $verVoos = $auth->createPermission('verVoos');
+        $verVoos->description = 'Ver voos';
+        $auth->add($verVoos);
+
+        $adicionarVoos = $auth->createPermission('adicionarVoos');
+        $adicionarVoos->description = 'Adicionar voos';
+        $auth->add($adicionarVoos);
+
+        $editarVoos = $auth->createPermission('editarVoos');
+        $editarVoos->description = 'Editar voos';
+        $auth->add($editarVoos);
+
+        $eliminarVoos = $auth->createPermission('eliminarVoos');
+        $eliminarVoos->description = 'Eliminar voos';
+        $auth->add($eliminarVoos);
 
 
-        $gerirAvioes = $auth->createPermission('gerirAvioes');
-        $gerirAvioes->description = 'Registar, editar, eliminar e alterar o estado de aviões';
-        $auth->add($gerirAvioes);
-
-
-        $gerirVoos = $auth->createPermission('gerirVoos');
-        $gerirVoos->description = 'Registar, editar, eliminar e listar voos; estado, horas reais e porta de embarque';
-        $auth->add($gerirVoos);
-
-
+        // CRUD - ESCALAS
         $gerirEscalas = $auth->createPermission('gerirEscalas');
         $gerirEscalas->description = 'Adicionar, editar e remover escalas de um voo';
         $auth->add($gerirEscalas);
 
-
+        // CRUD - BILHETES
         $verBilhetesVoo = $auth->createPermission('verBilhetesVoo');
         $verBilhetesVoo->description = 'Consultar bilhetes vendidos e passageiros com check-in de um voo';
         $auth->add($verBilhetesVoo);
@@ -106,7 +194,7 @@ class RbacController extends Controller
         $cancelarBilhete->description = 'Cancelar qualquer bilhete';
         $auth->add($cancelarBilhete);
 
-
+        // VER ESTATISTICAS
         $verEstatisticas = $auth->createPermission('verEstatisticas');
         $verEstatisticas->description = 'Ver o painel de estatísticas';
         $auth->add($verEstatisticas);
