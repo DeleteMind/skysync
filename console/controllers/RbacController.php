@@ -5,27 +5,16 @@ use Yii;
 use yii\console\Controller;
 use common\rbac\DonoBilheteRule;
 
-/**
- * RBAC do SkySync, segundo os requisitos funcionais (Tabelas 5 a 9 do relatório).
- *
- *   php yii rbac/init                 -> cria roles, permissões e regra (APAGA tudo antes!)
- *   php yii rbac/assign admin 1       -> atribui um role a um utilizador
- *   php yii rbac/revoke gestor 2      -> retira um role a um utilizador
- *
- * Roles: admin, gestor, passageiro.
- * O Visitante não tem role: é quem não tem sessão iniciada ('?' no ACF).
- */
 class RbacController extends Controller
 {
     public function actionInit()
     {
         $auth = Yii::$app->authManager;
-        $auth->removeAll(); // apaga tudo, incluindo as atribuições de roles aos utilizadores
 
+        //$auth->removeAll(); // apaga tudo, incluindo as atribuições de roles aos utilizadores
 
 
         // REGRA: só o dono do bilhete
-
         $regraDono = new DonoBilheteRule();
         $auth->add($regraDono);
 
@@ -378,35 +367,10 @@ class RbacController extends Controller
 
         $auth->addChild($admin, $gestor); // herda todas as permissões do gestor
 
-        echo "RBAC do SkySync criado: 3 roles, 20 permissões, 1 regra.\n";
-        echo "Atenção: as atribuições foram apagadas. Volta a correr php yii rbac/assign.\n";
+
+        // Atribuição de perfis
+        $auth->assign($admin, 1);
+
     }
 
-    public function actionAssign($role, $userId)
-    {
-        $auth = Yii::$app->authManager;
-        $r = $auth->getRole($role);
-        if ($r === null) {
-            echo "O role '$role' não existe. Roles: admin, gestor, passageiro.\n";
-            return 1;
-        }
-        if ($auth->getAssignment($role, $userId) !== null) {
-            echo "O user $userId já tem o role '$role'.\n";
-            return 0;
-        }
-        $auth->assign($r, $userId);
-        echo "Role '$role' atribuído ao user $userId.\n";
-    }
-
-    public function actionRevoke($role, $userId)
-    {
-        $auth = Yii::$app->authManager;
-        $r = $auth->getRole($role);
-        if ($r === null) {
-            echo "O role '$role' não existe.\n";
-            return 1;
-        }
-        $auth->revoke($r, $userId);
-        echo "Role '$role' retirado ao user $userId.\n";
-    }
 }

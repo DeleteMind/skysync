@@ -28,7 +28,7 @@ class SiteController extends Controller
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
-                        'allow' => true,
+                        'allow' => true
                     ],
                     [
                         'actions' => ['logout', 'index'],
@@ -85,8 +85,6 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             if (!Yii::$app->user->can('acederBackend')) {
                 Yii::$app->user->logout();
-                Yii::$app->session->setFlash('error', 'Não tem acesso ao backend.');
-                return $this->refresh();
             }
             return $this->goBack();
         }

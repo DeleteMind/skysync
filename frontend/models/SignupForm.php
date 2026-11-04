@@ -103,7 +103,7 @@ class SignupForm extends Model
 
             //Atribuir a role passageiro
             $auth = Yii::$app->authManager;
-            $auth->assign($auth->getRole('passageiro'), $user->id);
+            $auth->assign($auth->getRole('passageiro'), $user->getId());
             $transaction->commit();
         } catch (\Throwable $e) {
             $transaction->rollBack();
