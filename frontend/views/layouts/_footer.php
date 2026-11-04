@@ -11,7 +11,7 @@ use yii\helpers\Html;
 <!-- FOOTER -->
 <footer class="site-footer">
     <div class="container">
-        <div class="footer-grid">
+        <div class="footer-grid d-flex justify-content-between w-100">
             <div>
                 <a href="index.html" class="logo">
           <span class="logo-mark">
@@ -29,32 +29,14 @@ use yii\helpers\Html;
           </span>
                     SkySync
                 </a>
-                <p class="muted small" style="margin-top: 14px; max-width: 300px">
-                    A plataforma do Aeroporto de Lisboa para pesquisar voos, comprar bilhetes e fazer check-in num só lugar.
-                </p>
             </div>
             <div>
-                <h4>Viajar</h4>
-                <a href="pesquisa.html">Pesquisar voos</a>
-                <a href="partidas.html">Partidas e chegadas</a>
-                <a href="checkin.html">Check-in online</a>
-            </div>
-            <div>
-                <h4>Conta</h4>
-                <a href="login.html">Entrar</a>
-                <a href="login.html#registo">Criar conta</a>
-                <a href="bilhetes.html">Os meus bilhetes</a>
-            </div>
-            <div>
-                <h4>Apoio</h4>
-                <a href="#">Bagagem</a>
-                <a href="#">Privacidade (RGPD)</a>
+                <h4>Administração</h4>
                 <a href="bo/login.html">Back-office</a>
             </div>
         </div>
         <div class="footer-bottom">
             <span>© 2026 SkySync · Projeto PSI — TeSP PSI, Politécnico de Leiria</span>
-            <span>Feito com cuidado em Leiria</span>
         </div>
     </div>
 </footer>
