@@ -46,13 +46,13 @@ $user = Yii::$app->user;
                     ['label' => 'Aeroportos', 'icon' => 'th'],
                     //['label' => 'Login', 'url' => ['site/login'], 'icon' => 'sign-in-alt', 'visible' => Yii::$app->user->isGuest],
                     ['label' => 'Companhias Aéreas', 'icon' => 'bug', 'url' => ['/debug'], 'visible' => $user->can('admin')],
-                    ['label' => 'Aviões',  'icon' => 'file-code', 'url' => ['/gii'], 'visible' => $user->can('gestor')],
+                    ['label' => 'Aviões',  'icon' => 'file-code', 'url' => ['/aviao/index'], 'visible' => $user->can('gestor')],
                     ['label' => 'Voos', 'icon' => 'bug', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
                     ['label' => 'Escalas', 'icon' => 'bug', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
                     ['label' => 'Bilhetes', 'icon' => 'bug', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
                     ['label' => 'Bagagens', 'icon' => 'bug', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
                     ['label' => 'Tipos de Bagagem', 'icon' => 'bug', 'url' => ['/debug'], 'visible' => $user->can('admin')],
-                    ['label' => 'Utilizadores', 'icon' => 'bug', 'url' => ['/debug'], 'visible' => $user->can('admin')],
+                    ['label' => 'Utilizadores', 'icon' => 'bug', 'url' => ['/user/index'], 'visible' => $user->can('admin')],
 
 
 

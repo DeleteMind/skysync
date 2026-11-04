@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\User;
 use backend\models\UserSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -18,17 +19,18 @@ class UserController extends Controller
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                    ],
+        return [
+            'access' => [
+                'class' => \yii\filters\AccessControl::class,
+                'rules' => [
+                    ['allow' => true, 'roles' => ['@']],
                 ],
-            ]
-        );
+            ],
+            'verbs' => [
+                'class' => \yii\filters\VerbFilter::class,
+                'actions' => ['delete' => ['POST']],
+            ],
+        ];
     }
 
     /**
@@ -38,13 +40,15 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        if(Yii::$app->user->can('verUtilizadores')){
+            $searchModel = new UserSearch();
+            $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {} // depois redirecionar para home e avisar que nao tem autorizacao caso alguem tente aceder pela url
     }
 
     /**
