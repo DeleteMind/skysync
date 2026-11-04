@@ -75,7 +75,7 @@ class SignupForm extends Model
             return null;
         }
 
-        $transaction = Yii::$app->db->beginTransaction();
+        //$transaction = Yii::$app->db->beginTransaction();
         try {
             //Criar o user
             $user = new User();
@@ -104,9 +104,9 @@ class SignupForm extends Model
             //Atribuir a role passageiro
             $auth = Yii::$app->authManager;
             $auth->assign($auth->getRole('passageiro'), $user->getId());
-            $transaction->commit();
+
         } catch (\Throwable $e) {
-            $transaction->rollBack();
+            //$transaction->rollBack();
             Yii::error('Erro no registo: ' . $e->getMessage(), __METHOD__);
             $this->addError('username', 'Não foi possível criar a conta: ' . $e->getMessage());
             return null;
