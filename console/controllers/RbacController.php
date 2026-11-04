@@ -370,6 +370,7 @@ class RbacController extends Controller
 
         // Atribuição de perfis
         $auth->assign($admin, 1);
+        $auth->assign($gestor, 2);
 
     }
 }
