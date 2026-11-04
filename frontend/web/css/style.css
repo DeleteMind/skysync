@@ -680,9 +680,56 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   .phone { transform: scale(.92); }
 }
 
-/* ---------- 22. YII: NavBar do Bootstrap com as cores do template ---------- */
+/* ---------- 22. YII: o Bootstrap passa a usar as cores do template ---------- */
 
-/* O Bootstrap pinta a barra com estas variáveis: passam a usar as cores do template */
+/* Cores gerais do Bootstrap (texto, fundo, bordas, campos de formulário).
+   Como apontam para as cores do template, mudam sozinhas com o tema claro/escuro. */
+:root,
+[data-bs-theme="light"],
+[data-bs-theme="dark"] {
+  --bs-body-color: var(--ink);
+  --bs-body-bg: var(--bg);
+  --bs-emphasis-color: var(--ink);
+  --bs-secondary-color: var(--ink-3);
+  --bs-secondary-bg: var(--surface-2);
+  --bs-tertiary-bg: var(--surface-2);
+  --bs-border-color: var(--line-strong);
+  --bs-link-color: var(--accent);
+  --bs-link-hover-color: var(--accent-hover);
+  --bs-heading-color: var(--ink);
+}
+
+/* Campos de formulário: fundo e texto do template */
+.form-control,
+.form-select {
+  background-color: var(--surface);
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--surface);
+  color: var(--ink);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.form-control::placeholder { color: var(--ink-3); }
+.form-label, .control-label, label { color: var(--ink-2); }
+
+/* Botão principal: o Bootstrap usa estas variáveis em todos os estados (normal, hover, clique) */
+.btn-primary {
+  --bs-btn-bg: var(--ink);
+  --bs-btn-color: var(--bg);
+  --bs-btn-border-color: transparent;
+  --bs-btn-hover-bg: var(--accent);
+  --bs-btn-hover-color: var(--accent-ink);
+  --bs-btn-hover-border-color: transparent;
+  --bs-btn-active-bg: var(--accent-hover);
+  --bs-btn-active-color: var(--accent-ink);
+  --bs-btn-active-border-color: transparent;
+}
+
+/* Barra de navegação (NavBar do Yii) */
 .site-header.navbar {
   --bs-navbar-color: var(--ink-2);
   --bs-navbar-hover-color: var(--ink);
@@ -692,6 +739,15 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   padding: 0;
 }
 
-/* Botão "Criar conta": volta a ter o texto do botão do template */
-.site-header .nav-link.btn-primary { color: var(--bg); }
-.site-header .nav-link.btn-primary:hover { color: var(--accent-ink); }
+/* Botão "Criar conta" no cabeçalho */
+.site-header .nav-link.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: transparent;
+}
+.site-header .nav-link.btn-primary:hover,
+.site-header .nav-link.btn-primary:focus {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: transparent;
+}
