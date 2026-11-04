@@ -21,7 +21,6 @@ class AeroportoController extends Controller
             $response = $client->get(Yii::$app->params['aeroportosApiUrl'] . '/countries/' . $pais . '/airports', ['page[size]' => 10, 'filter[type]' => 'large_airport'])->send();
 
             if (!$response->isOk) {
-                echo "Erro na API para $pais: {$response->statusCode}\n";
                 continue;
             }
 
@@ -42,7 +41,5 @@ class AeroportoController extends Controller
                 $aeroporto->save();
             }
         }
-
-        echo "Importação concluída: $novos novos, $atualizados atualizados.\n";
     }
 }

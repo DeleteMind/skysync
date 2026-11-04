@@ -54,6 +54,5 @@ class SeedController extends Controller
             'hora_partida' => "$amanha 11:45:00",
         ]);
         $escala->save();
-        echo "Voos de teste criados.\n";
     }
 }
