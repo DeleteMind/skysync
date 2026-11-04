@@ -26,44 +26,44 @@ $items = [
     [
         'label' => 'Aviões',
         'url' => ['/aviao/index'],
-        'visible' => $user->can('gerirAvioes'),
+        'visible' => $user->can('gestor'),
     ],
     [
         'label' => 'Bilhetes',
         'url' => ['/bilhete/index'],
-        'visible' => $user->can('verBilhetesVoo'),
+        'visible' => $user->can('gestor'),
     ],
     [
         'label' => 'Voos',
         'url' => ['/voo/index'],
-        'visible' => $user->can('gerirVoos'),
+        'visible' => $user->can('gestor'),
     ],
     [
         'label' => 'Escalas',
         'url' => ['/escala/index'],
-        'visible' => $user->can('gerirEscalas'),
+        'visible' => $user->can('gestor'),
     ],
     [
         'label' => 'Aeroportos',
         'url' => ['/aeroporto/index'],
-        'visible' => $user->can('gerirAeroportos'),
+        'visible' => $user->can('gestor'),
     ],
     [
         'label' => 'Bagagem',
         'url' => ['/bagagem/index'],
-        'visible' => $user->can('gerirBagagem'),
+        'visible' => $user->can('gestor'),
     ],
 
     // operacoes admin
     [
         'label' => 'Companhia Aerea',
         'url' => ['/companhia-aerea/index'],
-        'visible' => $user->can('gerirCompanhias'),
+        'visible' => $user->can('admin'),
     ],
     [
         'label' => 'Tipo Bagagem',
         'url' => ['/tipo-bagagem/index'],
-        'visible' => $user->can('gerirTiposBagagem'),
+        'visible' => $user->can('admin'),
     ],
 
     [
