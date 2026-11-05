@@ -113,7 +113,6 @@ class UserController extends Controller
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
-
     public function actionDelete($id)
     {
         // Implementacao soft delete

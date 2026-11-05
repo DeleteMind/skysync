@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => function ($model) {
                             return [
                                     User::STATUS_ACTIVE   => 'Ativo',
-                                    User::STATUS_INACTIVE => 'Desativo',
+                                    User::STATUS_INACTIVE => 'Inativo',
                                     User::STATUS_DELETED  => 'Apagado',
                             ][$model->status] ?? $model->status; // o da esquerda vai buscar o que definimos em cima e o da direita depois dos ?? vai usar o numero que está guardado na base de dados
                         },
@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'filter' => [ // o Yii transforma a caixa de cima numa lista para escolher entre os três estados
 
                                 User::STATUS_ACTIVE   => 'Ativo',
-                                User::STATUS_INACTIVE => 'Desativo',
+                                User::STATUS_INACTIVE => 'Inativo',
                                 User::STATUS_DELETED  => 'Apagado',
                         ],
 
