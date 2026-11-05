@@ -35,7 +35,25 @@ $this->params['breadcrumbs'][] = $this->title;
             //'password_hash',
             //'password_reset_token',
             'email:email',
-            'status',
+                [
+                        'attribute' => 'status', // Diz ao Yii que é sobre a coluna status do model que queremos mexer
+                        'value' => function ($model) {
+                            return [
+                                    User::STATUS_ACTIVE   => 'Ativo',
+                                    User::STATUS_INACTIVE => 'Desativo',
+                                    User::STATUS_DELETED  => 'Apagado',
+                            ][$model->status] ?? $model->status; // o da esquerda vai buscar o que definimos em cima e o da direita depois dos ?? vai usar o numero que está guardado na base de dados
+                        },
+                        'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Todos'], // primeira opção da lista: mostra todos
+
+                        'filter' => [ // o Yii transforma a caixa de cima numa lista para escolher entre os três estados
+
+                                User::STATUS_ACTIVE   => 'Ativo',
+                                User::STATUS_INACTIVE => 'Desativo',
+                                User::STATUS_DELETED  => 'Apagado',
+                        ],
+
+                ],
             //'created_at',
             //'updated_at',
             //'verification_token',
