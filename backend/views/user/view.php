@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'username',
             'email:email',
+            'created_at:datetime:Criado em',
             [
                 'attribute' => 'status',
                 'value' => [User::STATUS_ACTIVE => 'Ativo',
