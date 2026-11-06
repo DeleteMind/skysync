@@ -115,10 +115,12 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        // Implementacao soft delete
+
         $user = $this->findModel($id);
-        $user->status = user::STATUS_DELETED;
-        $user->save();
+
+        // metodo no common/Model do User
+        $user->delete();
+
 
         return $this->redirect(['index']);
     }

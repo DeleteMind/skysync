@@ -27,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'username',
             'email:email',
             'created_at:datetime:Criado em',
+            // Usar um operador ternario e o admin só pode ver os ativos e inativos
             [
                 'attribute' => 'status',
                 'value' => [User::STATUS_ACTIVE => 'Ativo',

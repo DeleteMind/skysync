@@ -223,4 +223,11 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+
+    // Implementação do soft delete
+    public function delete(): bool {
+        $this->status = self::STATUS_DELETED;
+        return $this->save(false);
+    }
 }
