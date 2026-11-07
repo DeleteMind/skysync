@@ -11,7 +11,7 @@ class RbacController extends Controller
     {
         $auth = Yii::$app->authManager;
 
-        //$auth->removeAll(); // apaga tudo, incluindo as atribuições de roles aos utilizadores
+        $auth->removeAll(); // apaga tudo, incluindo as atribuições de roles aos utilizadores
 
 
         // REGRA: só o dono do bilhete
