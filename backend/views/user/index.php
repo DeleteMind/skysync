@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -38,9 +38,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                         'attribute' => 'status', // Diz ao Yii que é sobre a coluna status do model que queremos mexer
                         'value' => function ($model) {
-
-                                return $model->status == User::STATUS_ACTIVE ? 'Ativo' : 'Inativo'
-                            ; // o da esquerda vai buscar o que definimos em cima e o da direita depois dos ?? vai usar o numero que está guardado na base de dados
+        
+                                return $model->status == User::STATUS_ACTIVE ? 'Ativo' : 'Inativo';
                         },
                         'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Todos'], // primeira opção da lista: mostra todos
 
@@ -48,6 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 User::STATUS_ACTIVE   => 'Ativo',
                                 User::STATUS_INACTIVE => 'Inativo',
+
                         ],
 
                 ],
