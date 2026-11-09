@@ -751,3 +751,12 @@ input[type="range"] { width: 100%; accent-color: var(--accent); }
   color: var(--accent-ink);
   border-color: transparent;
 }
+
+/* ---------- 2b. COMPATIBILIDADE COM O BOOTSTRAP (Yii) ---------- */
+.row { flex-wrap: nowrap; margin: 0; --bs-gutter-x: 0; --bs-gutter-y: 0; }
+.row > * { width: auto; max-width: none; flex-shrink: 1; margin-top: 0; }
+.card { display: block; }
+.modal { position: relative; display: block; height: auto; top: auto; left: auto; z-index: auto; }
+.toast, .toast:not(.show) { display: flex; width: auto; max-width: none; }
+hr { opacity: 1; }
+.table { --bs-table-bg: transparent; --bs-table-color: inherit; }
