@@ -30,10 +30,16 @@ use yii\helpers\Html;
                     SkySync
                 </a>
             </div>
+            <?php
+            $backendUrl = str_replace('/frontend/web', '/backend/web', Yii::$app->request->baseUrl);
+            if (Yii::$app->user->can('acederBackend')): ?>
             <div>
                 <h4>Administração</h4>
-                <a href="bo/login.html">Back-office</a>
+                <?= Html::a('Back-office', $backendUrl . '/index.php?r=site/login') ?>
+
+                <!--<a href="../../backend/web/index/">Back-office</a>-->
             </div>
+            <?php endif; ?>
         </div>
         <div class="footer-bottom">
             <span>© 2026 SkySync · Projeto PSI — TeSP PSI, Politécnico de Leiria</span>
