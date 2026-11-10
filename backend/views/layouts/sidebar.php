@@ -27,7 +27,7 @@ $logo = '<span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="cu
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="info">
-                <a href="#" class="d-block"> <?= Yii::$app->user->identity->username ?> </a>
+                <span class="d-block text-light"> <?= Yii::$app->user->identity->username ?> </span>
             </div>
         </div>
 
