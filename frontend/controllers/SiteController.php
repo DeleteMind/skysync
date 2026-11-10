@@ -186,7 +186,7 @@ class SiteController extends Controller
         );
 
         if ($signed) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            Yii::$app->session->setFlash('success', 'Conta registada com sucesso!');
             return $this->goHome();
         }
 
