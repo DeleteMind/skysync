@@ -35,9 +35,7 @@ use yii\helpers\Html;
             if (Yii::$app->user->can('acederBackend')): ?>
             <div>
                 <h4>Administração</h4>
-                <?= Html::a('Back-office', $backendUrl . '/index.php?r=site/login') ?>
-
-                <!--<a href="../../backend/web/index/">Back-office</a>-->
+                <?= Html::a('Back-office', $backendUrl . '/') ?>
             </div>
             <?php endif; ?>
         </div>
