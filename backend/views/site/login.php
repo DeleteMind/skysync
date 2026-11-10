@@ -29,6 +29,13 @@ use yii\helpers\Html;
             </div>
         </div>
 
+        <?php $frontendUrl = str_replace('/backend/web', '/frontend/web', Yii::$app->request->baseUrl); ?>
+        <div class="row">
+            <div class="col-12">
+                <?= Html::a('Front-office', $frontendUrl . '/') ?>
+            </div>
+        </div>
+
         <?php \yii\bootstrap4\ActiveForm::end(); ?>
     </div>
     <!-- /.login-card-body -->
