@@ -13,6 +13,11 @@ use yii\helpers\Html;
         <li class="nav-item d-none d-sm-inline-block">
             <a href="<?=\yii\helpers\Url::home()?>" class="nav-link">Home</a>
         </li>
+
+        <?php $frontendUrl = str_replace('/backend/web', '/frontend/web', Yii::$app->request->baseUrl); ?>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="<?= $frontendUrl ?>" class="nav-link">Front-Office</a>
+        </li>
     </ul>
 
     <!-- Right navbar links -->
