@@ -17,7 +17,6 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'status')->dropDownList([
         User::STATUS_ACTIVE => 'Ativo',
         User::STATUS_INACTIVE => 'Inativo',
-        User::STATUS_DELETED => 'Apagado',
     ]) ?>
 
     <div class="form-group">

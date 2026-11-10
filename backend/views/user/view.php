@@ -27,13 +27,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'username',
             'email:email',
             'created_at:datetime:Criado em',
-            // Usar um operador ternario e o admin só pode ver os ativos e inativos
             [
-                'attribute' => 'status',
-                'value' => [User::STATUS_ACTIVE => 'Ativo',
-                            User::STATUS_INACTIVE => 'Inativo',
-                            User::STATUS_DELETED => 'Apagado']
-                            [$model->status] ?? $model->status,
+                    'attribute' => 'status', // Diz ao Yii que é sobre a coluna status do model que queremos mexer
+                    'value' => function ($model) {
+
+                        return $model->status == User::STATUS_ACTIVE ? 'Ativo' : 'Inativo';
+                    },
             ],
             'passageiro.nome',    //chama automaticamente o metodo getPassageiro() que faz a relacao entre as duas tabelas (common/models/user)
             'passageiro.tipo_documento',
