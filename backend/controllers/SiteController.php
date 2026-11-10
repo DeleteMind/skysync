@@ -83,7 +83,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            if (!Yii::$app->user->can('acederBackend')) { // Perguntar ao professor Gonçalo
+            if (!Yii::$app->user->can('acederBackend')) {
                 Yii::$app->user->logout();
             }
             return $this->goBack();

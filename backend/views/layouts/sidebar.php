@@ -5,14 +5,21 @@ use yii\helpers\Html;
 
 $user = Yii::$app->user;
 
+
+$logo = '<span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15c3-1 6-1 9 0s6 1 9 0"></path><path d="M8 11l3-7 2 1-1 6 5 1 2-2 1.5.5-1 3.5"></path></svg></span>SkySync';
+
 ?>
+
 
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-        <img src="<?=$assetDir?>/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
+    <a href="<?= Yii::$app->homeUrl ?>" class="brand-link d-flex align-items-center">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 10px 0 6px; flex-shrink:0;">
+            <path d="M3 15c3-1 6-1 9 0s6 1 9 0"></path>
+            <path d="M8 11l3-7 2 1-1 6 5 1 2-2 1.5.5-1 3.5"></path>
+        </svg>
+        <span class="brand-text font-weight-bold">SkySync</span>
     </a>
 
     <!-- Sidebar -->
@@ -43,16 +50,16 @@ $user = Yii::$app->user;
             echo \hail812\adminlte\widgets\Menu::widget([
                 'items' => [
 
-                    ['label' => 'Aeroportos', 'icon' => 'th'],
+                    ['label' => 'Aeroportos', 'icon' => 'map-marker-alt', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
                     //['label' => 'Login', 'url' => ['site/login'], 'icon' => 'sign-in-alt', 'visible' => Yii::$app->user->isGuest],
-                    ['label' => 'Companhias Aéreas', 'icon' => 'bug', 'url' => ['/debug'], 'visible' => $user->can('admin')],
-                    ['label' => 'Aviões',  'icon' => 'file-code', 'url' => ['/aviao/index'], 'visible' => $user->can('gestor')],
-                    ['label' => 'Voos', 'icon' => 'bug', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
-                    ['label' => 'Escalas', 'icon' => 'bug', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
-                    ['label' => 'Bilhetes', 'icon' => 'bug', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
-                    ['label' => 'Bagagens', 'icon' => 'bug', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
-                    ['label' => 'Tipos de Bagagem', 'icon' => 'bug', 'url' => ['/debug'], 'visible' => $user->can('admin')],
-                    ['label' => 'Utilizadores', 'icon' => 'bug', 'url' => ['/user/index'], 'visible' => $user->can('admin')],
+                    ['label' => 'Companhias Aéreas', 'icon' => 'building', 'url' => ['/debug'], 'visible' => $user->can('admin')],
+                    ['label' => 'Aviões',  'icon' => 'plane', 'url' => ['/aviao/index'], 'visible' => $user->can('gestor')],
+                    ['label' => 'Voos', 'icon' => 'plane-departure', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
+                    ['label' => 'Escalas', 'icon' => 'route', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
+                    ['label' => 'Bilhetes', 'icon' => 'ticket-alt', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
+                    ['label' => 'Bagagens', 'icon' => 'suitcase-rolling', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
+                    ['label' => 'Tipos de Bagagem', 'icon' => 'tags', 'url' => ['/debug'], 'visible' => $user->can('admin')],
+                    ['label' => 'Utilizadores', 'icon' => 'users', 'url' => ['/user/index'], 'visible' => $user->can('admin')],
 
 
 
