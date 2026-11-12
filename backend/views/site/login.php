@@ -3,7 +3,7 @@ use yii\helpers\Html;
 ?>
 <div class="card">
     <div class="card-body login-card-body">
-        <p class="login-box-msg">Insira as suas credênciais</p>
+        <p class="login-box-msg">Insira as suas credenciais</p>
 
         <?php $form = \yii\bootstrap4\ActiveForm::begin(['id' => 'login-form']) ?>
 
