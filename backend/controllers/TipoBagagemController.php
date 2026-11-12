@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\TipoBagagem;
 use backend\models\TipoBagagemSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -22,7 +23,7 @@ class TipoBagagemController extends Controller
             'access' => [
                 'class' => \yii\filters\AccessControl::class,
                 'rules' => [
-                    ['allow' => true, 'roles' => ['gerirTiposBagagem']],
+                    ['allow' => true, 'roles' => ['admin']],
                 ],
             ],
             'verbs' => [
@@ -39,6 +40,10 @@ class TipoBagagemController extends Controller
      */
     public function actionIndex()
     {
+        if(!Yii::$app->user->can('verTiposBagagem')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $searchModel = new TipoBagagemSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -68,6 +73,10 @@ class TipoBagagemController extends Controller
      */
     public function actionCreate()
     {
+        if(!Yii::$app->user->can('adicionarTiposBagagem')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $model = new TipoBagagem();
 
         if ($this->request->isPost) {
@@ -92,6 +101,12 @@ class TipoBagagemController extends Controller
      */
     public function actionUpdate($id)
     {
+
+        if(!Yii::$app->user->can('editarTiposBagagem')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
+
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
@@ -112,6 +127,10 @@ class TipoBagagemController extends Controller
      */
     public function actionDelete($id)
     {
+        if(!Yii::$app->user->can('apagarTiposBagagem')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

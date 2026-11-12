@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\Voo;
 use backend\models\VooSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -22,7 +23,7 @@ class VooController extends Controller
             'access' => [
                 'class' => \yii\filters\AccessControl::class,
                 'rules' => [
-                    ['allow' => true, 'roles' => ['gerirVoos']],
+                    ['allow' => true, 'roles' => ['gestor']],
                 ],
             ],
             'verbs' => [
@@ -39,6 +40,11 @@ class VooController extends Controller
      */
     public function actionIndex()
     {
+        if(!Yii::$app->user->can('verVoos')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
+
         $searchModel = new VooSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -68,6 +74,11 @@ class VooController extends Controller
      */
     public function actionCreate()
     {
+
+        if(!Yii::$app->user->can('adicionarVoos')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $model = new Voo();
 
         if ($this->request->isPost) {
@@ -92,6 +103,10 @@ class VooController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(!Yii::$app->user->can('editarVoos')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
@@ -112,6 +127,11 @@ class VooController extends Controller
      */
     public function actionDelete($id)
     {
+        if(!Yii::$app->user->can('apagarVoos')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
