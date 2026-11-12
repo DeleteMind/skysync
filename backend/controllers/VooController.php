@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Voo;
 use backend\models\VooSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;

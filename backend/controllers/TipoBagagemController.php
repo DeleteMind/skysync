@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\TipoBagagem;
 use backend\models\TipoBagagemSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
