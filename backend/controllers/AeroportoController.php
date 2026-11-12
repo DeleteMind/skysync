@@ -4,7 +4,9 @@ namespace backend\controllers;
 
 use common\models\Aeroporto;
 use backend\models\AeroportoSearch;
+use Yii;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -22,7 +24,7 @@ class AeroportoController extends Controller
             'access' => [
                 'class' => \yii\filters\AccessControl::class,
                 'rules' => [
-                    ['allow' => true, 'roles' => ['gerirAeroportos']],
+                    ['allow' => true, 'roles' => ['gestor']],
                 ],
             ],
             'verbs' => [
@@ -39,6 +41,10 @@ class AeroportoController extends Controller
      */
     public function actionIndex()
     {
+        if(!Yii::$app->user->can('verAeroportos')){
+            throw new ForbiddenHttpException("Não tem acesso.");
+        }
+
         $searchModel = new AeroportoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -63,40 +69,6 @@ class AeroportoController extends Controller
 
 
     /**
-     * Updates an existing Aeroporto model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing Aeroporto model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
      * Finds the Aeroporto model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
@@ -111,4 +83,42 @@ class AeroportoController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+
+    /*
+     * Updates an existing Aeroporto model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param int $id ID
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    /*
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+    */
+    /*
+     * Deletes an existing Aeroporto model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param int $id ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    /*
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+    */
 }

@@ -4,7 +4,9 @@ namespace backend\controllers;
 
 use common\models\Aviao;
 use backend\models\AviaoSearch;
+use Yii;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -22,7 +24,7 @@ class AviaoController extends Controller
             'access' => [
                 'class' => \yii\filters\AccessControl::class,
                 'rules' => [
-                    ['allow' => true, 'roles' => ['gerirAvioes']],
+                    ['allow' => true, 'roles' => ['gestor']],
                 ],
             ],
             'verbs' => [
@@ -39,6 +41,10 @@ class AviaoController extends Controller
      */
     public function actionIndex()
     {
+        if(!Yii::$app->user->can('verAvioes')){
+            throw new ForbiddenHttpException("Não tem acesso.");
+        }
+
         $searchModel = new AviaoSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -61,11 +67,32 @@ class AviaoController extends Controller
         ]);
     }
 
+
     /**
+     * Finds the Aviao model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param int $id ID
+     * @return Aviao the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+
+    protected function findModel($id)
+    {
+        if (($model = Aviao::findOne(['id' => $id])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+
+
+    /*
      * Creates a new Aviao model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
+    /*
     public function actionCreate()
     {
         $model = new Aviao();
@@ -82,14 +109,15 @@ class AviaoController extends Controller
             'model' => $model,
         ]);
     }
-
-    /**
+    */
+    /*
      * Updates an existing Aviao model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
+    /*
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -102,34 +130,20 @@ class AviaoController extends Controller
             'model' => $model,
         ]);
     }
-
-    /**
+    */
+    /*
      * Deletes an existing Aviao model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
+    /*
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
-
-    /**
-     * Finds the Aviao model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Aviao the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Aviao::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
+*/
 }

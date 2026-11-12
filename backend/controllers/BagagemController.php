@@ -4,7 +4,9 @@ namespace backend\controllers;
 
 use common\models\Bagagem;
 use backend\models\BagagemSearch;
+use Yii;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -22,12 +24,15 @@ class BagagemController extends Controller
             'access' => [
                 'class' => \yii\filters\AccessControl::class,
                 'rules' => [
-                    ['allow' => true, 'roles' => ['gerirBagagem']],
+                    ['allow' => true, 'roles' => ['gestor']],
                 ],
+            ],
+            'verbs' => [
+                'class' => \yii\filters\VerbFilter::class,
+                'actions' => ['delete' => ['POST']],
             ],
         ];
     }
-
 
     /**
      * Lists all Bagagem models.
@@ -36,6 +41,10 @@ class BagagemController extends Controller
      */
     public function actionIndex()
     {
+        if(!Yii::$app->user->can('verBagagem')){
+            throw new ForbiddenHttpException("Não tem acesso.");
+        }
+
         $searchModel = new BagagemSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -44,8 +53,6 @@ class BagagemController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
-
 
     /**
      * Displays a single Bagagem model.
@@ -60,7 +67,74 @@ class BagagemController extends Controller
         ]);
     }
 
+    /**
+     * Creates a new Bagagem model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return string|\yii\web\Response
+     */
 
+    public function actionCreate()
+    {
+        if(!Yii::$app->user->can('adicionarBagagem')){
+            throw new ForbiddenHttpException("Não tem acesso.");
+        }
+
+        $model = new Bagagem();
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates an existing Bagagem model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param int $id ID
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdate($id)
+    {
+        if(!Yii::$app->user->can('editarBagagem')){
+            throw new ForbiddenHttpException("Não tem acesso.");
+        }
+
+        $model = $this->findModel($id);
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Deletes an existing Bagagem model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param int $id ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        if(!Yii::$app->user->can('apagarBagagem')){
+            throw new ForbiddenHttpException("Não tem acesso.");
+        }
+
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
 
     /**
      * Finds the Bagagem model based on its primary key value.
