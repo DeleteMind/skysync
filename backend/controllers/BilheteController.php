@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\Bilhete;
 use backend\models\BilheteSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -22,9 +23,12 @@ class BilheteController extends Controller
             'access' => [
                 'class' => \yii\filters\AccessControl::class,
                 'rules' => [
-                    ['allow' => true, 'actions' => ['index', 'view'], 'roles' => ['verBilhetesVoo']],
-                    ['allow' => true, 'actions' => ['update'], 'roles' => ['cancelarBilhete']],
+                    ['allow' => true, 'roles' => ['gestor']],
                 ],
+            ],
+            'verbs' => [
+                'class' => \yii\filters\VerbFilter::class,
+                'actions' => ['delete' => ['POST']],
             ],
         ];
     }
@@ -45,7 +49,6 @@ class BilheteController extends Controller
         ]);
     }
 
-
     /**
      * Displays a single Bilhete model.
      * @param int $id ID
@@ -54,12 +57,39 @@ class BilheteController extends Controller
      */
     public function actionView($id)
     {
+        if(!Yii::$app->user->can('verBilhetes')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
     }
 
+    /**
+     * Creates a new Bilhete model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return string|\yii\web\Response
+     */
 
+    /*
+    public function actionCreate()
+    {
+
+        $model = new Bilhete();
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }*/
 
     /**
      * Updates an existing Bilhete model.
@@ -68,8 +98,14 @@ class BilheteController extends Controller
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
+
+
     public function actionUpdate($id)
     {
+        if(!Yii::$app->user->can('editarBilhetes')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
@@ -81,7 +117,23 @@ class BilheteController extends Controller
         ]);
     }
 
+    /**
+     * Deletes an existing Bilhete model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param int $id ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        if(!Yii::$app->user->can('apagarBilhetes')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
 
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
 
     /**
      * Finds the Bilhete model based on its primary key value.

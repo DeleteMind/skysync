@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\Escala;
 use backend\models\EscalaSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -23,7 +24,7 @@ class EscalaController extends Controller
             'access' => [
                 'class' => \yii\filters\AccessControl::class,
                 'rules' => [
-                    ['allow' => true, 'roles' => ['gerirEscalas']],
+                    ['allow' => true, 'roles' => ['gestor']],
                 ],
             ],
             'verbs' => [
@@ -57,6 +58,10 @@ class EscalaController extends Controller
      */
     public function actionView($id)
     {
+        if(!Yii::$app->user->can('verEscalas')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -69,6 +74,10 @@ class EscalaController extends Controller
      */
     public function actionCreate()
     {
+        if(!Yii::$app->user->can('adicionarEscalas')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $model = new Escala();
 
         if ($this->request->isPost) {
@@ -93,6 +102,10 @@ class EscalaController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(!Yii::$app->user->can('editarEscalas')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
@@ -113,6 +126,10 @@ class EscalaController extends Controller
      */
     public function actionDelete($id)
     {
+        if(!Yii::$app->user->can('apagarEscalas')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

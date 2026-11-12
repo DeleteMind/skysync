@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\CompanhiaAerea;
 use backend\models\CompanhiaAereaSearch;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -22,7 +23,7 @@ class CompanhiaAereaController extends Controller
             'access' => [
                 'class' => \yii\filters\AccessControl::class,
                 'rules' => [
-                    ['allow' => true, 'roles' => ['gerirCompanhias']],
+                    ['allow' => true, 'roles' => ['admin']],
                 ],
             ],
             'verbs' => [
@@ -56,6 +57,10 @@ class CompanhiaAereaController extends Controller
      */
     public function actionView($id)
     {
+        if(!Yii::$app->user->can('verCompanhias')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -68,6 +73,10 @@ class CompanhiaAereaController extends Controller
      */
     public function actionCreate()
     {
+        if(!Yii::$app->user->can('adicionarCompanhias')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $model = new CompanhiaAerea();
 
         if ($this->request->isPost) {
@@ -92,6 +101,10 @@ class CompanhiaAereaController extends Controller
      */
     public function actionUpdate($id)
     {
+        if(!Yii::$app->user->can('editarCompanhias')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
@@ -112,6 +125,10 @@ class CompanhiaAereaController extends Controller
      */
     public function actionDelete($id)
     {
+        if(!Yii::$app->user->can('apagarCompanhias')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);

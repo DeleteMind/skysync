@@ -188,6 +188,10 @@ class RbacController extends Controller
         $verBilhetes->description = 'Ver bilhetes vendidos e passageiros com check-in de um voo';
         $auth->add($verBilhetes);
 
+        $editarBilhetes = $auth->createPermission('editarBilhetes');
+        $editarBilhetes->description = 'Editar qualquer bilhete';
+        $auth->add($editarBilhetes);
+
         $apagarBilhetes = $auth->createPermission('apagarBilhete');
         $apagarBilhetes->description = 'Apagar qualquer bilhete';
         $auth->add($apagarBilhetes);
@@ -339,6 +343,7 @@ class RbacController extends Controller
         $auth->addChild($gestor, $editarEscalas);
         $auth->addChild($gestor, $apagarEscalas);
         $auth->addChild($gestor, $verBilhetes);
+        $auth->addChild($gestor, $editarBilhetes);
         $auth->addChild($gestor, $apagarBilhetes);
         $auth->addChild($gestor, $verEstatisticas);
 
