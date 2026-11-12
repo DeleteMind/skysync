@@ -6,6 +6,7 @@ use common\models\User;
 use backend\models\UserSearch;
 use Yii;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -23,7 +24,7 @@ class UserController extends Controller
             'access' => [
                 'class' => \yii\filters\AccessControl::class,
                 'rules' => [
-                    ['allow' => true, 'roles' => ['@']],
+                    ['allow' => true, 'roles' => ['admin']],
                 ],
             ],
             'verbs' => [
@@ -40,7 +41,11 @@ class UserController extends Controller
      */
     public function actionIndex()
     {
-        if(Yii::$app->user->can('verUtilizadores')){
+
+        if(!Yii::$app->user->can('verUtilizadores')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
             $searchModel = new UserSearch();
             $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -48,7 +53,6 @@ class UserController extends Controller
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
             ]);
-        } else {} // depois redirecionar para home e avisar que nao tem autorizacao caso alguem tente aceder pela url
     }
 
     /**
@@ -69,6 +73,7 @@ class UserController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
+    /*
     public function actionCreate()
     {
         $model = new User();
@@ -85,7 +90,7 @@ class UserController extends Controller
             'model' => $model,
         ]);
     }
-
+*/
     /**
      * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -95,6 +100,11 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
+
+        if(!Yii::$app->user->can('editarUtilizadores')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
@@ -115,6 +125,10 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
+
+        if(!Yii::$app->user->can('apagarUtilizadores')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
 
         $user = $this->findModel($id);
 
