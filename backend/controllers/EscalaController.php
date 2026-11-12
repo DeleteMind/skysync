@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Escala;
 use backend\models\EscalaSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -41,6 +42,10 @@ class EscalaController extends Controller
      */
     public function actionIndex()
     {
+        if(!Yii::$app->user->can('verEscalas')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $searchModel = new EscalaSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -58,10 +63,6 @@ class EscalaController extends Controller
      */
     public function actionView($id)
     {
-        if(!Yii::$app->user->can('verEscalas')){
-            throw new ForbiddenHttpException("Não tem acesso");
-        }
-
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

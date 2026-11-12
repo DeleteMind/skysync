@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Bilhete;
 use backend\models\BilheteSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -40,6 +41,10 @@ class BilheteController extends Controller
      */
     public function actionIndex()
     {
+        if(!Yii::$app->user->can('verBilhetes')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $searchModel = new BilheteSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -57,10 +62,6 @@ class BilheteController extends Controller
      */
     public function actionView($id)
     {
-        if(!Yii::$app->user->can('verBilhetes')){
-            throw new ForbiddenHttpException("Não tem acesso");
-        }
-
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

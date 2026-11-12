@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\CompanhiaAerea;
 use backend\models\CompanhiaAereaSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -40,6 +41,10 @@ class CompanhiaAereaController extends Controller
      */
     public function actionIndex()
     {
+        if(!Yii::$app->user->can('verCompanhias')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         $searchModel = new CompanhiaAereaSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -57,10 +62,6 @@ class CompanhiaAereaController extends Controller
      */
     public function actionView($id)
     {
-        if(!Yii::$app->user->can('verCompanhias')){
-            throw new ForbiddenHttpException("Não tem acesso");
-        }
-
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
