@@ -50,15 +50,15 @@ $logo = '<span class="logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="cu
             echo \hail812\adminlte\widgets\Menu::widget([
                 'items' => [
 
-                    ['label' => 'Aeroportos', 'icon' => 'map-marker-alt', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
+                    ['label' => 'Aeroportos', 'icon' => 'map-marker-alt', 'url' => ['/aeroporto/index'], 'visible' => $user->can('gestor')],
                     //['label' => 'Login', 'url' => ['site/login'], 'icon' => 'sign-in-alt', 'visible' => Yii::$app->user->isGuest],
-                    ['label' => 'Companhias Aéreas', 'icon' => 'building', 'url' => ['/debug'], 'visible' => $user->can('admin')],
+                    ['label' => 'Companhias Aéreas', 'icon' => 'building', 'url' => ['/companhia-aerea/index'], 'visible' => $user->can('admin')],
                     ['label' => 'Aviões',  'icon' => 'plane', 'url' => ['/aviao/index'], 'visible' => $user->can('gestor')],
-                    ['label' => 'Voos', 'icon' => 'plane-departure', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
-                    ['label' => 'Escalas', 'icon' => 'route', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
-                    ['label' => 'Bilhetes', 'icon' => 'ticket-alt', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
-                    ['label' => 'Bagagens', 'icon' => 'suitcase-rolling', 'url' => ['/debug'], 'visible' => $user->can('gestor')],
-                    ['label' => 'Tipos de Bagagem', 'icon' => 'tags', 'url' => ['/debug'], 'visible' => $user->can('admin')],
+                    ['label' => 'Voos', 'icon' => 'plane-departure', 'url' => ['/voo/index'], 'visible' => $user->can('gestor')],
+                    ['label' => 'Escalas', 'icon' => 'route', 'url' => ['/escala/index'], 'visible' => $user->can('gestor')],
+                    ['label' => 'Bilhetes', 'icon' => 'ticket-alt', 'url' => ['/bilhete/index'], 'visible' => $user->can('gestor')],
+                    ['label' => 'Bagagens', 'icon' => 'suitcase-rolling', 'url' => ['/bagagem/index'], 'visible' => $user->can('gestor')],
+                    ['label' => 'Tipos de Bagagem', 'icon' => 'tags', 'url' => ['/tipo-bagagem/index'], 'visible' => $user->can('admin')],
                     ['label' => 'Utilizadores', 'icon' => 'users', 'url' => ['/user/index'], 'visible' => $user->can('admin')],
 
 
