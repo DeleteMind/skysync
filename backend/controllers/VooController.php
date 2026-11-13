@@ -63,6 +63,10 @@ class VooController extends Controller
      */
     public function actionView($id)
     {
+        if(!Yii::$app->user->can('verVoos')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

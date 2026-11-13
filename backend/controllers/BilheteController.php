@@ -62,6 +62,10 @@ class BilheteController extends Controller
      */
     public function actionView($id)
     {
+        if(!Yii::$app->user->can('verBilhetes')){
+            throw new ForbiddenHttpException("Não tem acesso");
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
