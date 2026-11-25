@@ -12,16 +12,6 @@ use yii\helpers\Html;
 $this->title = 'Administração';
 $this->params['breadcrumbs'] = [['label' => $this->title]];
 
-$username = Yii::$app->user->identity->username;
-$role = array_key_first(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id));
-$auth = Yii::$app->authManager;
-
-$voos = Voo::find()->orderBy('hora_chegada')->all();
-
-//Recarrega a página de 3 em 3 segundos para atualizar os dados;
-$this->registerMetaTag(['http-equiv' => 'refresh', 'content' => '3']);
-
-
 ?>
 <div class="container-fluid">
 
@@ -29,7 +19,7 @@ $this->registerMetaTag(['http-equiv' => 'refresh', 'content' => '3']);
 
     <div class="row">
         <div class="col-12">
-            <h3>Bem vindo, <?= Html::encode($username) ?>!</h3>
+            <h3>Bem vindo, <?= $username ?>!</h3>
         </div>
     </div>
 
@@ -38,14 +28,14 @@ $this->registerMetaTag(['http-equiv' => 'refresh', 'content' => '3']);
         <div class="col-md-4 col-sm-6 col-12">
             <?= \hail812\adminlte\widgets\InfoBox::widget([
                     'text' => 'Utilizadores do Sistema',
-                    'number' => User::find()->count(),
+                    'number' => $totalUsersCount,
                     'icon' => 'fas fa-users',
             ]) ?>
         </div>
         <div class="col-md-4 col-sm-6 col-12">
             <?= \hail812\adminlte\widgets\InfoBox::widget([
                     'text' => 'Gestores Operacionais',
-                    'number' => count($auth->getUserIdsByRole('gestor')),
+                    'number' => $gestoresCount,
                     'theme' => 'success',
                     'icon' => 'fas fa-user-tie',
             ]) ?>
@@ -53,7 +43,7 @@ $this->registerMetaTag(['http-equiv' => 'refresh', 'content' => '3']);
         <div class="col-md-4 col-sm-6 col-12">
             <?= \hail812\adminlte\widgets\InfoBox::widget([
                     'text' => 'Passageiros',
-                    'number' => count($auth->getUserIdsByRole('passageiro')),
+                    'number' => $passageirosCount,
                     'theme' => 'info',
                     'icon' => 'fas fa-user',
             ]) ?>
@@ -65,14 +55,14 @@ $this->registerMetaTag(['http-equiv' => 'refresh', 'content' => '3']);
         <div class="col-md-4 col-sm-6 col-12">
             <?= \hail812\adminlte\widgets\InfoBox::widget([
                     'text' => 'Companhias Aéreas',
-                    'number' => CompanhiaAerea::find()->count(),
+                    'number' => $companhiasCount,
                     'icon' => 'fas fa-plane',
             ]) ?>
         </div>
         <div class="col-md-4 col-sm-6 col-12">
             <?= \hail812\adminlte\widgets\InfoBox::widget([
                     'text' => 'Voos',
-                    'number' => Voo::find()->count(),
+                    'number' => $voosCount,
                     'theme' => 'warning',
                     'icon' => 'fas fa-plane-departure',
             ]) ?>
@@ -80,7 +70,7 @@ $this->registerMetaTag(['http-equiv' => 'refresh', 'content' => '3']);
         <div class="col-md-4 col-sm-6 col-12">
             <?= \hail812\adminlte\widgets\InfoBox::widget([
                     'text' => 'Bilhetes Vendidos',
-                    'number' => Bilhete::find()->count(),
+                    'number' => $bilhetesCount,
                     'theme' => 'danger',
                     'icon' => 'fas fa-ticket-alt',
             ]) ?>
@@ -90,7 +80,30 @@ $this->registerMetaTag(['http-equiv' => 'refresh', 'content' => '3']);
 
     <h3>Voos</h3>
 
+    <div class="card mb-3">
+        <div class="card-body">
+
+            <?= Html::beginForm(['index'], 'get', ['class' => 'd-flex justify-content-between align-items-end']) ?>
+            <div>
+                <label for="data" class="form-label mb-1">Data de partida</label>
+                <input type="date" id="data" name="data" value="<?= $data ?>" class="form-control">
+            </div>
+
+            <div class="d-flex" style="gap: 15px;">
+                <button type="submit" class="btn btn-primary">Filtrar</button>
+                <?= Html::a('Limpar', ['index'], ['class' => 'btn btn-outline-secondary']) ?>
+            </div>
+
+            <?= Html::endForm() ?>
+        </div>
+    </div>
+    
     <table class="table table-striped">
+
+        <?php if (empty($voos)): ?>
+            <tr><td colspan="6">Sem voos com a data escolhida</td></tr>
+
+        <?php else: ?>
         <tr>
             <th>Voo</th>
             <th>Origem</th>
@@ -110,6 +123,9 @@ $this->registerMetaTag(['http-equiv' => 'refresh', 'content' => '3']);
                 <td><?= $voo->estado ?></td>
             </tr>
         <?php endforeach; ?>
+
+        <?php endif; ?>
+
     </table>
 
 </div>

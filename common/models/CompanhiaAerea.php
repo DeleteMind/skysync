@@ -60,4 +60,9 @@ class CompanhiaAerea extends \yii\db\ActiveRecord
         return $this->hasMany(Aviao::class, ['companhia_aerea_id' => 'id']);
     }
 
+    public static function getCompanhiasCount() : int
+    {
+        return self::find()->count() ? self::find()->count() : 0;
+    }
+
 }

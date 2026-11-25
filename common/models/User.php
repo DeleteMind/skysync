@@ -237,4 +237,24 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasMany(AuthAssignment::class, ['user_id' => 'id']);
     }
+
+    public static function getCount() : int
+    {
+        //o self é a forma da classe se referir a si mesma
+        //find devolve um Active Query
+        //count devolve int/string da contagem
+
+        return self::find()->count() ? self::find()->count() : 0;
+    }
+
+    public static function getGestoresCount() : int
+    {
+        return count(Yii::$app->authManager->getUserIdsByRole('gestor'));
+    }
+
+    public static function getPassageirosCount() : int
+    {
+        return count(Yii::$app->authManager->getUserIdsByRole('passageiro'));
+
+    }
 }

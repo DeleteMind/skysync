@@ -184,4 +184,9 @@ class Bilhete extends \yii\db\ActiveRecord
     {
         $this->estado = self::ESTADO_UTILIZADO;
     }
+
+    public static function getBilhetesCount() : int
+    {
+        return self::find()->count() ? self::find()->count() : 0;
+    }
 }

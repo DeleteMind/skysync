@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace backend\controllers;
 
+use common\models\Bilhete;
+use common\models\CompanhiaAerea;
 use common\models\LoginForm;
+use common\models\User;
+use common\models\Voo;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -65,7 +69,33 @@ class SiteController extends Controller
      */
     public function actionIndex(): string
     {
-        return $this->render('index');
+        $totalUsersCount = User::getCount();
+        $gestoresCount = User::getGestoresCount();
+        $passageirosCount = User::getPassageirosCount();
+        $companhiasCount = CompanhiaAerea::getCompanhiasCount();
+        $bilhetesCount = Bilhete::getBilhetesCount();
+        $voosCount = Voo::getVoosCount();
+
+        $username = Yii::$app->user->identity->username;
+
+        //obter a data do filtro dos voos no index
+        $data = Yii::$app->request->get('data');
+        $voosFiltro = Voo::getVoosFiltro($data);
+
+        return $this->render('index',
+            [
+                'username' => $username,
+                'totalUsersCount' => $totalUsersCount,
+                'gestoresCount' => $gestoresCount,
+                'passageirosCount' => $passageirosCount,
+                'companhiasCount' => $companhiasCount,
+                'bilhetesCount' => $bilhetesCount,
+                'voosCount' => $voosCount,
+                'voos' => $voosFiltro,
+                'data' => $data,
+            ],
+
+        );
     }
 
     /**

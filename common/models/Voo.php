@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "voo".
@@ -230,6 +231,29 @@ class Voo extends \yii\db\ActiveRecord
     public function setEstadoToCancelado()
     {
         $this->estado = self::ESTADO_CANCELADO;
+    }
+
+    public static function getVoosCount() : int
+    {
+        return self::find()->count() ? self::find()->count()  : 0;
+    }
+
+    /*
+    public static function getVoos()
+    {
+        return self::find()->all();
+    }*/
+
+    public static function getVoosFiltro ($data)
+    {
+        if ($data == null)
+        {
+            return self::find()->all();
+        }
+        else
+        {
+           return self::find()->andFilterWhere(['DATE(hora_partida)' => $data])->all();
+        }
     }
 
 }
