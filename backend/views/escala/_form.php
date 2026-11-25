@@ -23,15 +23,31 @@ use common\models\Aeroporto;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'voo_id')->dropDownList($voos, ['prompt' => 'Escolha o voo']) ?>
 
-    <?= $form->field($model, 'aeroporto_id')->dropDownList($aeroportos, ['prompt' => 'Aeroporto da escala']) ?>
+    <?php if($model->isNewRecord): ?>
+        <?= $form->field($model, 'voo_id')
+            ->dropDownList($voos, ['prompt' => 'Escolha o voo'])
+        ->label('Voo') ?>
+    <?php endif; ?>
 
-    <?= $form->field($model, 'ordem')->textInput() ?>
 
-    <?= $form->field($model, 'hora_chegada')->textInput() ?>
+    <?= $form->field($model, 'aeroporto_id')
+            ->dropDownList($aeroportos, ['prompt' => 'Escolha o Aeroporto'])
+            ->label('Aeroporto') ?>
 
-    <?= $form->field($model, 'hora_partida')->textInput() ?>
+
+    <?= $form->field($model, 'ordem')
+            ->textInput() ?>
+
+
+    <?= $form->field($model, 'hora_partida')
+            ->input('datetime-local') ?>
+
+
+    <?= $form->field($model, 'hora_chegada')
+            ->input('datetime-local') ?>
+
+
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

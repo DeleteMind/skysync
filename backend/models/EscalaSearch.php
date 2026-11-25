@@ -14,11 +14,17 @@ class EscalaSearch extends Escala
     /**
      * {@inheritdoc}
      */
+
+    public $voo_numero;
+    public $aeroporto_nome;
+
     public function rules()
     {
         return [
             [['id', 'voo_id', 'aeroporto_id', 'ordem'], 'integer'],
             [['hora_chegada', 'hora_partida'], 'safe'],
+            [['voo_numero'], 'safe'],
+            [['aeroporto_nome'], 'safe'],
         ];
     }
 
@@ -41,13 +47,25 @@ class EscalaSearch extends Escala
      */
     public function search($params, $formName = null)
     {
-        $query = Escala::find();
+        //juntar a tabela de voo e aeroporto
+        $query = Escala::find()->joinWith(['voo']);
+        $query = Escala::find()->joinWith(['voo', 'aeroporto']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->sort->attributes['voo_numero'] = [
+            'asc' => ['voo.numero' => SORT_ASC],
+            'desc' => ['voo.numero' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['aeroporto_nome'] = [
+            'asc' => ['aeroporto.nome' => SORT_ASC],
+            'desc' => ['aeroporto.nome' => SORT_DESC],      //tabela aeroporto coluna nome
+        ];
 
         $this->load($params, $formName);
 
@@ -59,13 +77,16 @@ class EscalaSearch extends Escala
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'voo_id' => $this->voo_id,
-            'aeroporto_id' => $this->aeroporto_id,
-            'ordem' => $this->ordem,
-            'hora_chegada' => $this->hora_chegada,
-            'hora_partida' => $this->hora_partida,
+            'escala.id' => $this->id,
+            'escala.voo_id' => $this->voo_id,
+            'escala.aeroporto_id' => $this->aeroporto_id,
+            'escala.ordem' => $this->ordem,
+            'escala.hora_chegada' => $this->hora_chegada,
+            'escala.hora_partida' => $this->hora_partida,
         ]);
+
+        $query->andFilterWhere(['like', 'voo.numero', $this->voo_numero]);
+        $query->andFilterWhere(['like', 'aeroporto.nome', $this->aeroporto_nome]);  //tabela aeroporto coluna nome
 
         return $dataProvider;
     }

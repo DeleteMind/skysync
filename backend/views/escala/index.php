@@ -29,11 +29,25 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'voo.numero',
-            'aeroporto.nome',
+            [
+                'attribute' => 'voo_numero',
+                'label' => 'Número do Voo',
+                'value' => 'voo.numero',        // relacao getVoo do model + atributo numero
+            ],
+            [
+                'attribute' => 'aeroporto_nome',
+                'label' => 'Aeroporto',
+                'value' => 'aeroporto.nome',
+            ],
             'ordem',
-            'hora_chegada',
-            //'hora_partida',
+            [
+                    'attribute' => 'hora_partida',
+                    'filter' => false,
+            ],
+            [
+                'attribute' => 'hora_chegada',
+                'filter' => false,  // retira a caixa de procura
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Escala $model, $key, $index, $column) {

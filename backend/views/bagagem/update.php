@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 $this->title = "Bagagem do bilhete: " . $model->bilhete->numero;
 $this->params['breadcrumbs'][] = ['label' => 'Bagagens', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = 'Editar';
 
 ?>
 <div class="bagagem-update">
